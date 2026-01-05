@@ -1,5 +1,6 @@
 import scipy.stats
 import pandas as pd
+import numpy as np
 
 
 def test_column_presence_and_type(data):
@@ -113,8 +114,11 @@ def test_kolmogorov_smirnov(data, ks_alpha):
 
         result = scipy.stats.ks_2samp(sample1[col], sample2[col])
 
+        assert not np.isnan(result.pvalue), f"NaN p-value for column: {col}"
+
         # NOTE: as always, the p-value should be interpreted as the probability of
         # obtaining a test statistic (TS) equal or more extreme that the one we got
         # by chance, when the null hypothesis is true. If this probability is not
         # large enough, this dataset should be looked at carefully, hence we fail
-        assert result.pvalue > alpha_prime
+        assert float(result.pvalue) > float(alpha_prime)
+

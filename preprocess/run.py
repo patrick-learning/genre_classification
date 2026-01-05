@@ -25,6 +25,9 @@ def go(args):
     logger.info("Dropping duplicates")
     df = df.drop_duplicates().reset_index(drop=True)
 
+    logger.info("Fill numeric columns")
+    df['loudness'].fillna(value=0.0, inplace=True)
+
     # A minimal feature engineering step: a new feature
     logger.info("Feature engineering")
     df['title'].fillna(value='', inplace=True)
